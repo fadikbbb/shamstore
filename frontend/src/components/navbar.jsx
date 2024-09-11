@@ -1,26 +1,23 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import { useNavigate } from 'react-router-dom';
-import { CartContext } from '../contexts/CartContext'; // Import CartContext
+// import { CartContext } from '../contexts/CartContext'; // Import CartContext
 
 function Navbars() {
   const [role, setRole] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { cart } = useContext(CartContext); // Access cart from CartContext
+  // const { cart } = useContext(CartContext); // Access cart from CartContext
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("https://6672c0d76ca902ae11b1a226.mockapi.io/shamstore/products");
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setProducts(data);
+        const response = await fetch("http://localhost:4000/api/v1/products?category=category");
+console.log(response)
+        setProducts(response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -71,7 +68,7 @@ function Navbars() {
           <NavLink to={"/signup"} className="lg:border-0 lg:p-0 nav-link">Signup</NavLink>
         </>
       )}
-      <NavLink to={"/cart"} className="lg:border-0 lg:p-0 nav-link">Cart {cart.length > 0 && `(${cart.length})`}</NavLink> {/* Display cart count */}
+      {/* <NavLink to={"/cart"} className="lg:border-0 lg:p-0 nav-link">Cart {cart.length > 0 && `(${cart.length})`}</NavLink> Display cart count */}
     </>
   );
 

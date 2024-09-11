@@ -2,22 +2,19 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbars from "../components/navbar";
 import Footer from "../components/footer";
+import axios from "axios";
 
 function Products() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch('https://6672c0d76ca902ae11b1a226.mockapi.io/shamstore/products');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
-                const data = await response.json();
-                setProducts(data);
+                const response = await axios.get('http://localhost:4000/api/v1/products');
+                setProducts(response.data.data);
             } catch (error) {
+                console.log(error);
                 setError(error);
             } finally {
                 setLoading(false);
@@ -36,7 +33,7 @@ function Products() {
 
     // Group products by category
     const groupedProducts = {};
-    products.forEach(product => {
+    products?.map(product => {
         if (!groupedProducts[product.category]) {
             groupedProducts[product.category] = [];
         }
@@ -65,7 +62,7 @@ function Products() {
             <Navbars />
             <h1 className="title">Products</h1>
             {/* Render each category in a row */}
-            {Object.keys(groupedProducts).map(category => (
+            {Object.keys(groupedProducts)?.map(category => (
                 <div key={category}>
                     <h2 className="title text-5xl">{category}</h2>
                     <div className="flex items-center">
@@ -74,15 +71,15 @@ function Products() {
                             <path fill="currentColor" d="m17.5 5.999-.707.707 5.293 5.293H1v1h21.086l-5.294 5.295.707.707L24 12.499l-6.5-6.5z" data-name="Right" />
                         </svg>
                         <div className={category.trim() + " scrollbar-none overflow-x-auto flex w-full"}>
-                            {groupedProducts[category].map(product => (
+                            {groupedProducts[category]?.map(product => (
                                 <div key={product.id} className="product shadow-lg shadow-cyan-100 rounded-[25px] p-4  min-w-[400px] mx-4 my-8 flex flex-col justify-between items-center" >
                                     <div>
                                         <img src={product.image} className="m-[auto] min-h-[150px] max-h-[150px]" alt={product.title} />
                                     </div>
-                                    <h2 className="max-h-[40px] text-cyan-500 text-2xl my-4 text-ellipsis text-clip overflow-hidden">{product.title}</h2>
-                                    <p className="max-h-[100px] text-center text-xs text-gray-500 text-ellipsis text-clip overflow-hidden">{product.description}</p>
+                                    <h2 className="max-h-[40px] text-cyan-500 text-2xl my-4 text-ellipsis  overflow-hidden">{product.title}</h2>
+                                    <p className="max-h-[100px] text-center text-xs text-gray-500 text-ellipsis overflow-hidden">{product.description}</p>
                                     <p className="text-2xl my-4">${product.price}</p>
-                                    <Link className="btn-lightgreen" to={`/products/${product.id}`}>View Details</Link>
+                                    <Link className="btn-lightgreen" to={`/products/${product._id}`}>View Details</Link>
                                 </div>
                             ))}
                         </div>

@@ -1,8 +1,9 @@
-const {Router}=require('express');
-const authRouter=Router();
-const authController=require('../controllers/authController');
-authRouter.post('/register',authController.register);
-authRouter.post('/login',authController.login);
-authRouter.post('/forget-password',authController.forgetPassword);
+const { Router } = require('express');
+const authRouter = Router();
+const authController = require('../controllers/authController');
+authRouter.post('/register', authController.register);
+authRouter.post('/login', authController.login);
+authRouter.post('/forget-password/request', authController.forgetPasswordRequest);
+authRouter.post('/forget-password/:token', authController.forgetPassword);
 // authRouter.post('/update-password',authController.updatePassword);
-module.exports=authRouter;
+module.exports = authRouter;

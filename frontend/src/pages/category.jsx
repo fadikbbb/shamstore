@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
+import axios from 'axios';
 function Categories() {
-    const { id } = useParams();
+    const categoryName = useParams().id;
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -11,12 +12,8 @@ function Categories() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch('https://6672c0d76ca902ae11b1a226.mockapi.io/shamstore/products');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
-                const data = await response.json();
-                setProducts(data);
+                const response = await axios('http://localhost:4000/api/v1/products?category=' + categoryName);
+                setProducts(response.data.data);
             } catch (error) {
                 setError(error);
             } finally {
@@ -37,7 +34,7 @@ function Categories() {
     return (
         <div style={{ height: '100vh' }}>
             <Navbar  />
-            <h1 className='title'>Category {id}</h1>
+            <h1 className='title'>{categoryName}</h1>
             <div
                 style={{
                     display: 'flex',
@@ -48,10 +45,10 @@ function Categories() {
                 }}
             >
                 {products && products.map((product) => (
-                    product.category === id && (
+                   
                         <div
                             className="product border-x-2 p-4 border-cyan-500  lg:w-1/3 md:w-1/2 w-full  my-8 flex flex-col justify-between items-center"
-                            key={product.id}
+                            key={product._id}
                         >
                             <div>
 
@@ -64,10 +61,9 @@ function Categories() {
                                 {product.description}
                             </p>
                             <p className='my-2 text-2xl'>${product.price}</p>
-                            <Link className='btn-lightgreen my-2' to={`/products/${product.id}`}>View Details</Link>
+                            <Link className='btn-lightgreen my-2' to={`/products/${product._id}`}>View Details</Link>
                         </div>
-                    )
-                ))}
+                    ))}
             </div>
             <Footer />
         </div>

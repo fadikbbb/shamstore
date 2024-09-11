@@ -4,16 +4,15 @@ import Categories from "./pages/category";
 import Home from "./pages/home";
 import Products from "./pages/products";
 import Product from "./pages/product";
-import Login from "./pages/login";
-import Signup from "./pages/signup";
+import Login from "./pages/auth/login";
+import Signup from "./pages/auth/signup";
 import Addproduct from "./pages/dashboard/addproduct";
 import Dashboard from "./pages/dashboard/dashboard";
 import Editproduct from "./pages/dashboard/editproduct";
 import Deleteproduct from "./pages/dashboard/deleteproduct";
 import Customer from "./pages/dashboard/customer";
 import Cart from "./pages/cart";
-import Logout from "./pages/logout";
-import { CartProvider } from "./contexts/CartContext"; // Adjust the path as needed
+import Logout from "./pages/auth/logout";
 import NotFound from "./pages/NotFound";
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -34,11 +33,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <CartProvider>
+    // <CartProvider>
       <div className="container m-[auto]">
         <RouterProvider router={router} />
       </div>
-    </CartProvider>
+    // </CartProvider>
   );
 }
 

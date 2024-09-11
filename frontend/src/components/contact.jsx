@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
 const ContactForm = () => {
@@ -31,18 +32,7 @@ const ContactForm = () => {
         setSubmitting(true);
 
         try {
-            const response = await fetch('https://666da7c37a3738f7caccf44a.mockapi.io/shamstore/message', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
+            const response = await axios.post('http://localhost:4000/api/v1/users/message');
             setMessage('Message sent successfully!');
             setFormData({
                 name: '',

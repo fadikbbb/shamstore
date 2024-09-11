@@ -1,10 +1,10 @@
 const {Router}=require('express');
 const userRouter=Router();
 const userController=require('../controllers/userController');
-
-userRouter.get('/',userController.getAllUsers);
-userRouter.post('/',userController.createUser);
-userRouter.get('/:id',userController.getUserById);
-userRouter.delete('/:id',userController.deleteUser);
-userRouter.patch('/:id',userController.updateUser);
+const {protect}=require('../middleware/authmiddleware');
+userRouter.get('/',protect,userController.getAllUsers);
+userRouter.post('/',protect,userController.createUser);
+userRouter.get('/:id',protect,userController.getUserById);
+userRouter.delete('/:id',protect,userController.deleteUser);
+userRouter.patch('/:id',protect,userController.updateUser);
 module.exports=userRouter;

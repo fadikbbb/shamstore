@@ -6,12 +6,9 @@ function Feedback({ left, right }) {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch('https://666da7c37a3738f7caccf44a.mockapi.io/shamstore/message');
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                setFormData([...data]);
+                const response = await fetch('http://localhost:4000/api/v1/users/message');
+             
+                setFormData([...response.data.data]);
             } catch (error) {
                 console.error('Error fetching feedback data:', error);
             }

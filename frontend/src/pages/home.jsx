@@ -8,6 +8,7 @@ import Contact from "../components/contact";
 import Footer from "../components/footer";
 import Hero from "../components/hero";
 import Feedback from "../components/feedback";
+import axios from "axios";
 function Home() {
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
@@ -18,12 +19,8 @@ function Home() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch('https://6672c0d76ca902ae11b1a226.mockapi.io/shamstore/products');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
-                const data = await response.json();
-                setProducts(data);
+                const response = await axios.get('http://localhost:4000/api/v1/products');
+                setProducts(response.data.data);
             } catch (error) {
                 setError(error);
             } finally {
