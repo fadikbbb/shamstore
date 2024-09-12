@@ -4,13 +4,14 @@ import Products from "../components/products";
 import Services from "../components/services";
 import About from "../components/about";
 import CategoriesCo from "../components/categoriesCo";
-import Contact from "../components/contact";
+import Contact from "../components/commentForm";
 import Footer from "../components/footer";
 import Hero from "../components/hero";
-import Feedback from "../components/feedback";
+import Feedback from "../components/comment";
 import axios from "axios";
 function Home() {
     const URL=process.env.REACT_APP_URL
+    console.log(URL)
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const categoriesRef = useRef(null);

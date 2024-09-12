@@ -3,7 +3,7 @@ const commentRouter = Router();
 const commentController = require("../controllers/commentController");
 const { protect } = require("../middleware/authmiddleware");
 commentRouter.post("/comments", protect, commentController.createComment);
-commentRouter.get("/comments", commentController.getAllComments);
+commentRouter.get("/comments", commentController.getAllCommentsWithUser);
 commentRouter.get(
   "/comments/:commentId",
   protect,

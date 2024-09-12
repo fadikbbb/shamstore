@@ -30,7 +30,7 @@ function Product() {
             }
         }
         fetchData();
-    }, []);
+    }, [id, URL]);
 
     useEffect(() => {
         setNewPrice(price * quantity);

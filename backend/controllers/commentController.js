@@ -1,4 +1,5 @@
 const Comment = require("../models/comment");
+const User = require("../models/user");
 exports.createComment = async (req, res) => {
   const body = req.body;
   try {
@@ -7,7 +8,7 @@ exports.createComment = async (req, res) => {
         .status(400)
         .send({ status: "fail", message: "content is required" });
     }
-    userId = req.user._id;
+    const userId = req.user._id;
     body.userId = userId;
     const comment = await Comment.create(body);
     return res.status(200).send({ status: "success", data: comment });
@@ -15,9 +16,9 @@ exports.createComment = async (req, res) => {
     return res.status(500).send({ status: "fail", message: error.message });
   }
 };
-exports.getAllComments = async (req, res) => {
+exports.getAllCommentsWithUser = async (req, res) => {
   try {
-    const comments = await Comment.find();
+    const comments = await Comment.find().populate("userId", "firstName lastName");
     return res.status(200).send({ status: "success", data: comments });
   } catch (error) {
     return res.status(500).send({ status: "fail", message: error.message });
@@ -73,7 +74,7 @@ exports.updateComment = async (req, res) => {
     if (req.user._id !== comment.userId || req.user.role !== "admin")
       return res.status(401).send({ status: "fail", message: "unauthorized" });
     const updateComment = await Comment.findByIdAndUpdate(id, body);
-    if (!comment)
+    if (!updateComment)
       return res
         .status(404)
         .send({ status: "fail", message: "comment not found" });
@@ -86,3 +87,4 @@ exports.updateComment = async (req, res) => {
     return res.status(500).send({ status: "fail", message: error.message });
   }
 };
+

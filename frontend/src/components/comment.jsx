@@ -6,7 +6,7 @@ const URL=process.env.REACT_APP_URL
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get(`${URL}users/message`);
+                const response = await axios.get(`${URL}users/comments`);
                 setFormData([...response.data.data]);
             } catch (error) {
                 console.error('Error fetching feedback data:', error);

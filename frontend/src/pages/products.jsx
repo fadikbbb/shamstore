@@ -5,13 +5,14 @@ import Footer from "../components/footer";
 import axios from "axios";
 
 function Products() {
+    const URL = process.env.REACT_APP_URL;
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get('http://localhost:4000/api/v1/products');
+                const response = await axios.get(`${URL}products`);
                 setProducts(response.data.data);
             } catch (error) {
                 console.log(error);
