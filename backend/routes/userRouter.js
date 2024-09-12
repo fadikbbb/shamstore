@@ -4,7 +4,7 @@ const userController=require('../controllers/userController');
 const {protect}=require('../middleware/authmiddleware');
 userRouter.get('/',protect,userController.getAllUsers);
 userRouter.post('/',protect,userController.createUser);
-userRouter.get('/:id',protect,userController.getUserById);
+userRouter.get('/:id',userController.getUserById);
 userRouter.delete('/:id',protect,userController.deleteUser);
 userRouter.patch('/:id',protect,userController.updateUser);
 module.exports=userRouter;

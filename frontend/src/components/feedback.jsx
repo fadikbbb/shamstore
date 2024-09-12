@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-
+import axios from "axios";
 function Feedback({ left, right }) {
     const [formData, setFormData] = useState([]);
-
+const URL=process.env.REACT_APP_URL
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch('http://localhost:4000/api/v1/users/message');
-             
+                const response = await axios.get(`${URL}users/message`);
                 setFormData([...response.data.data]);
             } catch (error) {
                 console.error('Error fetching feedback data:', error);

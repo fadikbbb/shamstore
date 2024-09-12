@@ -14,6 +14,8 @@ import Customer from "./pages/dashboard/customer";
 import Cart from "./pages/cart";
 import Logout from "./pages/auth/logout";
 import NotFound from "./pages/NotFound";
+//i want to import env
+
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
   { path: "/login", element: <Login /> },

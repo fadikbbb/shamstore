@@ -4,6 +4,7 @@ import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import axios from 'axios';
 function Categories() {
+    const URL = process.env.REACT_APP_URL;
     const categoryName = useParams().id;
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -12,8 +13,9 @@ function Categories() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios('http://localhost:4000/api/v1/products?category=' + categoryName);
+            const response = await axios.get(`${URL}products/category/${categoryName}`);
                 setProducts(response.data.data);
+                console.log(response.data.data);
             } catch (error) {
                 setError(error);
             } finally {
@@ -21,7 +23,7 @@ function Categories() {
             }
         }
         fetchData();
-    }, []);
+    }, [categoryName,URL]);
 
     if (loading) {
         return <img className='absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]' src='../../Bean Eater@1x-1.0s-200px-200px.svg' alt=''/>; // Add a loading indicator

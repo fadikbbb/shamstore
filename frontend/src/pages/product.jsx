@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbars from "../components/navbar";
 import { useParams } from "react-router-dom";
@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import Footer from '../components/footer';
 import axios from 'axios';
 function Product() {
+    const URL = process.env.REACT_APP_URL;
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -19,7 +20,7 @@ function Product() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get(`http://localhost:4000/api/v1/products/${id}`);
+                const response = await axios.get(`${URL}products/${id}`);
                 setProduct(response.data.data);
                 setPrice(response.data.data.price);
             } catch (error) {
@@ -29,7 +30,7 @@ function Product() {
             }
         }
         fetchData();
-    }, [id]);
+    }, []);
 
     useEffect(() => {
         setNewPrice(price * quantity);
@@ -45,21 +46,7 @@ function Product() {
         setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
     };
 
-    const handleAddToCart = async () => {
-        setAddingToCart(true);
-        try {
-            const productToAdd = {
-                ...product,
-                quantity,
-                totalPrice: newPrice,
-            };
-            // await addToCart(productToAdd);
-        } catch (error) {
-            console.error('Error adding to cart', error);
-        } finally {
-            setAddingToCart(false);
-        }
-    };
+    
 
     if (loading) {
         return <img className='absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]' src='../../../Bean Eater@1x-1.0s-200px-200px.svg' alt=''/>;}
@@ -89,7 +76,7 @@ function Product() {
                                 <button onClick={increment} className="bg-cyan-300 text-white border-[1px] border-cyan-300 px-4 py-2 rounded-r">+</button>
                             </div>
                             <p className="text-2xl font-bold text-gray-900 mb-6">${newPrice?.toFixed(2)}</p>
-                            <button onClick={handleAddToCart} className="w-full py-3 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition duration-300" disabled={addingToCart}>
+                            <button  className="w-full py-3 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition duration-300" disabled={addingToCart}>
                                 {addingToCart ? "Adding..." : "Add to Cart"}
                             </button>
                             <Link to="/cart" className="block mt-4 text-center text-cyan-500 hover:underline">View Cart</Link>

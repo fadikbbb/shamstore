@@ -1,49 +1,35 @@
 import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 function Login() {
+  const URL = process.env.REACT_APP_URL;
   const navigator = useNavigate();
-  const [users, setUsers] = useState([]); // Initialize as array to store user data
   const [error, setError] = useState(null); // State to hold error message
 
-  useEffect(() => {
-    fetch(`https://666da7c37a3738f7caccf44a.mockapi.io/shamstore/user`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setUsers(data); // Set user data array
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-        setError("Failed to fetch user data. Please try again later.");
-      });
-  }, []);
-
-  function handleSubmit(event) {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
 
-    // Check if the credentials match any user
-    const foundUser = users.find(
-      (u) => u.email === email && u.password === password
-    );
-
-    if (foundUser) {
-      // Set login state and store user in local storage
-      window.localStorage.setItem("login", "true");
-      window.localStorage.setItem("user", JSON.stringify(foundUser));
-      navigator("/"); // Navigate to home or desired page
-    } else {
-      // Invalid login
-
+    if (!email || !password) {
       setError("Invalid email or password. Please try again.");
+      return;
     }
-  }
+    try {
+      const response = await axios.post(`${URL}auth/login`, {
+        email: email,
+        password: password,
+      });
+      const token = response.data.data;
+      window.localStorage.setItem("token", token);
+
+      navigator("/"); // Navigate to home or desired page
+    } catch (error) {
+      console.log(error);
+      setError(error.response.data.message);
+    }
+  };
 
   return (
     <div className="container">

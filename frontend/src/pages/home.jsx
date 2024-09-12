@@ -10,6 +10,7 @@ import Hero from "../components/hero";
 import Feedback from "../components/feedback";
 import axios from "axios";
 function Home() {
+    const URL=process.env.REACT_APP_URL
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const categoriesRef = useRef(null);
@@ -19,8 +20,9 @@ function Home() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get('http://localhost:4000/api/v1/products');
+                const response = await axios.get(`${URL}products`);
                 setProducts(response.data.data);
+                console.log(response.data.data);
             } catch (error) {
                 setError(error);
             } finally {

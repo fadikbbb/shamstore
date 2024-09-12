@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 // import { CartContext } from '../contexts/CartContext'; // Import CartContext
 
 function Navbars() {
@@ -15,8 +16,7 @@ function Navbars() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("http://localhost:4000/api/v1/products?category=category");
-console.log(response)
+        const response = await axios.get("http://localhost:4000/api/v1/products?category=category");
         setProducts(response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);

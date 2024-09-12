@@ -1,46 +1,48 @@
 import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
 function Signup() {
+  const URL = process.env.REACT_APP_URL;
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role: "",
-  });
-  const [checkBox, setCheckBox] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    let role = checkBox
-      ? event.target.code.value === "1234"
-        ? "admin"
-        : "user"
-      : "user";
-    const name = event.target.name.value;
-    const email = event.target.email.value;
-    const password = event.target.password.value;
-
-    setUser({ name, email, password, role });
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.post("http://localhost:4000/api/v1/users");
-      } catch (error) {
-        console.error("Error registering user:", error);
-        setErrorMessage("Error registering user. Please try again later.");
-      }
+    const newUser = {
+      firstName: event.target.firstName.value,
+      lastName: event.target.lastName.value,
+      email: event.target.email.value,
+      password: event.target.password.value,
+      confirmPassword: event.target.confirmPassword.value,
     };
+    if (
+      !newUser.firstName ||
+      !newUser.lastName ||
+      !newUser.email ||
+      !newUser.password ||
+      !newUser.confirmPassword
+    ) {
+      setErrorMessage("Please fill in all fields.");
+      return;
+    }
+    if (newUser.password !== newUser.confirmPassword) {
+      setErrorMessage("Passwords do not match.");
+      return;
+    }
 
-    fetchData();
-  }, [user, navigate]);
+    try {
+      await axios.post(`${URL}auth/register`, newUser);
+      navigate("/login");
+    } catch (error) {
+      console.error("Error registering user:", error);
+      // Extracting a user-friendly error message
+      const message =
+        error.response?.data?.message || "An error occurred. Please try again.";
+      setErrorMessage(message);
+    }
+  };
 
   return (
     <div className="container">
@@ -55,13 +57,24 @@ function Signup() {
           <input
             type="text"
             className="input-des"
-            name="name"
-            id="exampleInputName"
-            aria-describedby="emailHelp"
-            placeholder="Enter name"
+            name="firstName"
+            id="firstName"
+            placeholder="Enter firstName"
           />
-          <label htmlFor="exampleInputName" className="label-des">
-            Name
+          <label htmlFor="firstName" className="label-des">
+            first Name
+          </label>
+        </div>
+        <div className="relative md:me-2 my-4  w-full">
+          <input
+            type="text"
+            className="input-des"
+            name="lastName"
+            id="lastName"
+            placeholder="Enter lastName"
+          />
+          <label htmlFor="lastName" className="label-des">
+            last Name
           </label>
         </div>
         <div className="relative md:me-2 my-4  w-full">
@@ -69,51 +82,41 @@ function Signup() {
             type="email"
             className="input-des"
             name="email"
-            id="exampleInputEmail"
-            aria-describedby="emailHelp"
+            id="Email"
             placeholder="Enter email"
           />
-          <label htmlFor="exampleInputEmail" className="label-des">
+          <label htmlFor="Email" className="label-des">
             Email
           </label>
-          <small id="nameHelp" className="form-text text-muted">
-            We'll never share your email with anyone else.
-          </small>
         </div>
         <div className="relative md:me-2 my-4  w-full">
           <input
             type="password"
             className="input-des"
             name="password"
-            id="exampleInputPassword"
+            id="Password"
             placeholder="Password"
           />
-          <label htmlFor="exampleInputPassword" className="label-des">
+          <label htmlFor="Password" className="label-des">
             Password
           </label>
           <small id="nameHelp" className="form-text text-muted">
-            We'll never share your email with anyone else.
+            We'll never share your password with anyone else.
           </small>
         </div>
-        <div className="form-check my-3">
+        <div className="relative md:me-2 my-4  w-full">
           <input
-            type="checkbox"
-            onClick={() => setCheckBox(!checkBox)}
-            className="form-check-input"
-            id="exampleCheck1"
+            type="password"
+            className="input-des"
+            name="confirmPassword"
+            id="confirmPassword"
+            placeholder="confirmPassword"
           />
-          <label className="form-check-label" htmlFor="exampleCheck1">
-            Are you admin?
+          <label htmlFor="confirmPassword" className="label-des">
+            confirmPassword"
           </label>
-          {checkBox && (
-            <input
-              type="number"
-              name="code"
-              style={{ marginLeft: "10px", width: "20%" }}
-              placeholder="Code"
-            />
-          )}
         </div>
+
         <div className="relative md:me-2 my-4  w-full">
           <button type="submit" className="btn-lightgreen">
             Submit

@@ -3,8 +3,9 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
 exports.register = async (req, res) => {
+    const body = req.body
+    console.log(body)
     try {
-        const body = req.body
         if (!body.email || !body.firstName || !body.lastName || !body.password || !body.confirmPassword)
             return res.status(400).send({ status: "fail", message: "user fields are required" })
         if (body.password !== body.confirmPassword)
