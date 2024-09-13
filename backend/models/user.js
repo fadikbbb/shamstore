@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     DOB: { type: Date },
     email: {
         type: String, required: [true, 'email is required'],
-       match:[/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'invalid email'],
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'invalid email'],
         unique: true
     },
     password: {
@@ -50,6 +50,8 @@ const userSchema = new mongoose.Schema({
         default: Date.now
     },
 
+}, {
+    timestamps: true
 })
 const User = mongoose.model("User", userSchema);
 module.exports = User

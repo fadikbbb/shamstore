@@ -6,16 +6,21 @@ const orderSchema = new mongoose.Schema({
         ref: 'User',
         required: [true, 'user id is required']
     },
-    productId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
-        required: [true, 'product id is required']
-    },
-    quantity: {
-        type: Number,
-        required: [true, 'quantity is required'],
-        min: [1, 'quantity must be at least 1']
-    }
+    items: [
+        {
+            productId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Product',
+                required: [true, 'product id is required']
+            },
+            quantity: {
+                type: Number,
+                required: [true, 'quantity is required'],
+                min: [1, 'quantity must be at least 1']
+            }
+        }],
+}, {
+    timestamps: true
 });
-const Order = mongoose.model("Order",orderSchema);
+const Order = mongoose.model("Order", orderSchema);
 module.exports = Order

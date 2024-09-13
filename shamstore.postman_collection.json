@@ -1,0 +1,885 @@
+{
+	"info": {
+		"_postman_id": "4808e95b-dfad-4600-a482-8b6e97f5486e",
+		"name": "shamstore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33220176"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "all user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}users",
+							"host": [
+								"{{URL}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}users/{{userId}}",
+							"host": [
+								"{{URL}}users"
+							],
+							"path": [
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}users/{{userId}}",
+							"host": [
+								"{{URL}}users"
+							],
+							"path": [
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"hadi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}users/{{userId}}",
+							"host": [
+								"{{URL}}users"
+							],
+							"path": [
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"fadikbbb2004@gmail.com\",\r\n    \"firstName\": \"fadi\",\r\n    \"lastName\": \"kbb\",\r\n    \"password\": \"Fa12121212.\",\r\n    \"confirmPassword\": \"Fa12121212.\",\r\n    \"role\":\"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}users",
+							"host": [
+								"{{URL}}users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"fadikkbb2004@gmail.com\",\r\n    \"firstName\": \"fadi\",\r\n    \"lastName\": \"kbb\",\r\n    \"password\": \"Fadi1212!\",\r\n    \"confirmPassword\": \"Fadi1212!\",\r\n    \"role\":\"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}auth/register",
+							"host": [
+								"{{URL}}auth"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the JSON response body\r",
+									"var jsonData;\r",
+									"try {\r",
+									"    jsonData = pm.response.json();\r",
+									"} catch (error) {\r",
+									"    console.error(\"Failed to parse JSON response: \", error);\r",
+									"    pm.environment.set(\"error\", \"Invalid JSON response\");\r",
+									"    return; // Exit if the response isn't valid JSON\r",
+									"}\r",
+									"\r",
+									"// Extract the JWT token (Adjust based on your API response structure)\r",
+									"var token = jsonData.data; // Update 'jsonData.data' if the structure is different\r",
+									"if (!token) {\r",
+									"    console.error(\"Token not found in the response\");\r",
+									"    pm.environment.set(\"error\", \"Token missing from response\");\r",
+									"    return; // Exit if token is not found\r",
+									"}\r",
+									"\r",
+									"// Save the JWT token to the environment variable\r",
+									"pm.environment.set(\"JWT\", token);\r",
+									"\r",
+									"// Decode JWT to get the payload (error handling added)\r",
+									"function parseJwt(token) {\r",
+									"    try {\r",
+									"        var base64Url = token.split('.')[1]; // Get the payload part of the JWT (second part)\r",
+									"        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');\r",
+									"        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {\r",
+									"            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);\r",
+									"        }).join(''));\r",
+									"\r",
+									"        return JSON.parse(jsonPayload);\r",
+									"    } catch (error) {\r",
+									"        console.error(\"Failed to decode JWT: \", error);\r",
+									"        pm.environment.set(\"error\", \"Invalid JWT\");\r",
+									"        return null; // Return null if parsing fails\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"// Decode the JWT to extract the payload\r",
+									"var decodedJwt = parseJwt(token);\r",
+									"if (!decodedJwt) {\r",
+									"    console.error(\"Decoding failed\");\r",
+									"    return; // Exit if decoding fails\r",
+									"}\r",
+									"\r",
+									"// Save the user ID from the decoded JWT payload to the environment variable\r",
+									"if (decodedJwt.userId) {\r",
+									"    pm.environment.set(\"userId\", decodedJwt.userId); // Adjust 'userId' based on your JWT structure\r",
+									"} else {\r",
+									"    console.error(\"User ID not found in the JWT payload\");\r",
+									"    pm.environment.set(\"error\", \"User ID missing from JWT\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"fadikkbb2004@gmail.com\",\r\n    \"password\":\"Fadi1212!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}auth/login",
+							"host": [
+								"{{URL}}auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}logout",
+							"host": [
+								"{{URL}}logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forget password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}forget-password",
+							"host": [
+								"{{URL}}forget-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forget password request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"fadikbb2004@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}auth/forget-password/request",
+							"host": [
+								"{{URL}}auth"
+							],
+							"path": [
+								"forget-password",
+								"request"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "category",
+			"item": [
+				{
+					"name": "all category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}products/categories",
+							"host": [
+								"{{URL}}products"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"categoryId\", jsonData.data._id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"makeup\",\r\n    \"image\":\"https://media.istockphoto.com/id/1296705483/photo/make-up-products-prsented-on-white-podiums-on-pink-pastel-background.jpg?s=612x612&w=0&k=20&c=j3Vfpo81L5I2g0uJ5tArBC3l_fcPtPAcLzzT4pq5BLY=\",\r\n    \"description\":\"makeup items\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}products/categories",
+							"host": [
+								"{{URL}}products"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"image\":\"https://img.freepik.com/premium-photo/gen-old-gen-game-controllers_264404-116.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}products/categories/{{categoryId}}",
+							"host": [
+								"{{URL}}products"
+							],
+							"path": [
+								"categories",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}products/categories/{{categoryId}}",
+							"host": [
+								"{{URL}}products"
+							],
+							"path": [
+								"categories",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get category by id with products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}products/categories/{{categoryId}}",
+							"host": [
+								"{{URL}}products"
+							],
+							"path": [
+								"categories",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "order",
+			"item": [
+				{
+					"name": "create order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productId\":\"66e3efa1ea6f46c39d962fe8\",\r\n    \"quantity\":2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}cart/add",
+							"host": [
+								"{{URL}}cart"
+							],
+							"path": [
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}cart/{{userId}}",
+							"host": [
+								"{{URL}}cart"
+							],
+							"path": [
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "product",
+			"item": [
+				{
+					"name": "get all product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}products",
+							"host": [
+								"{{URL}}products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"productId\", jsonData.data._id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " [{\r\n        \"image\": \"https://m.media-amazon.com/images/I/51ZLleC1wSL._AC_SY395_.jpg\",\r\n        \"title\": \"Reebok Men's BB4500 Hi 2 Sneaker\",\r\n        \"description\": \"Basketball Shoes: Offering the perfect combination of performance and style, our men's casual sneakers are a must-have for sports enthusiasts and stylish trendsetters alike\",\r\n        \"price\": 35,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 4,\r\n        \"quantity\": 11\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71H9AI109eL._AC_SX395_.jpg\",\r\n        \"title\": \"New Balance Men's 608 V5 Casual \",\r\n        \"description\": \"ABZORB midsole cushioning aids in absorbing forceful impacts\",\r\n        \"price\": 47,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 2,\r\n        \"quantity\": 74\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71datvk3W3L._AC_SX395_.jpg\",\r\n        \"title\": \"Skechers Men's Gowalk 5 Qualify-Athletic Mesh Lace Up Performance Walking Shoe Sneaker\",\r\n        \"description\": \"SKECHERS GO WALK: keep up the pace in enhanced comfort and stability with the Skechers Go Walk 5 sneakers; just lace-up and go in these Skechers Go Walk Shoes for men\",\r\n        \"price\": 46,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 4,\r\n        \"quantity\": 27\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/81en2T43EpL._AC_SY500_.jpg\",\r\n        \"title\": \"VILOCY Men's Mesh Dress Sneakers \",\r\n        \"description\": \"Breathable stretchy knitted fabric upper allows your feet to stretch and breathe freely,match with leather hits on heel and tongue make mens dress sneaker more fashionable.\",\r\n        \"price\": 45,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 2,\r\n        \"quantity\": 23\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71y-7jzv9RL._AC_SX395_.jpg\",\r\n        \"title\": \"Skechers Men's Relaxed Fit\",\r\n        \"description\": \"Air Cooled Memory Foam Classic Fit Air Cooled Bungee Lace Adjustable To buy, select Size Add to Cart Add to List  Sponsored \",\r\n        \"price\": 47,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 4,\r\n        \"quantity\": 19\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/619rCBa-zKL._AC_SX395_.jpg\",\r\n        \"title\": \"Crocs Unisex-Adult Classic Clogs\",\r\n        \"description\": \"Crocs For Women And Men: The Crocs Classic Clogs Are Not Only The Most Comfortable Shoes For Women And Men But Also Easy To Clean Just Using Soap And Water And Allowing For A Quick Dry.\",\r\n        \"price\": 49,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 1,\r\n        \"quantity\": 38\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/61JQEDRPNTL._AC_SY395_.jpg\",\r\n        \"title\": \"Amazon Essentials Women's Pointed\",\r\n        \"description\": \"COMFORT AND FIT: These ballet flats have a padded insole with high-quality memory foam for added comfort and a heel pillow to relieve pressure and heel slip. The folded topline ensures a no-rub fit.\",\r\n        \"price\": 23,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 2,\r\n        \"quantity\": 90\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/61U4Qvd3IQL._AC_SY395_.jpg\",\r\n        \"title\": \"Hey Dude Women's Wendy Chambray\",\r\n        \"description\": \"Rounded Toe Design and Flex & Fold: This supports healthy feet with its unique shape giving complete freedom of movement. The Hey Dude Wendy will be an instant favorite in your modern-casual shose\",\r\n        \"price\": 41,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 3,\r\n        \"quantity\": 18\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71as1D75N8L._AC_SX385_.jpg\",\r\n        \"title\": \" Girls and Toddlers' Hooded \",\r\n        \"description\": \"ACTIVE SCUBA: Front panel is a lightweight padded and quilted recycled polyester woven fabric, pieced back to a mid-weight, breathable, and ultra-soft scuba fabric to help your child stay comfortable \",\r\n        \"price\": 37,\r\n        \"category\": \"grils Jacket\",\r\n        \"rate\": 1,\r\n        \"quantity\": 83\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71NVH41cY2L._AC_SX385_.jpg\",\r\n        \"title\": \"Toddlers' Quarter-Zip Polar Fleece Jacket\",\r\n        \"description\": \"POLAR FLEECE: Double-sided knit fabric with a brushed finish and subtle texture, this soft and cozy midweight fleece keeps you warm and insulated while withstanding everyday wear. \",\r\n        \"price\": 17,\r\n        \"category\": \"grils Jacket\",\r\n        \"rate\": 2,\r\n        \"quantity\": 73\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71cRkRlBLeS._AC_SX342_.jpg\",\r\n        \"title\": \"Toddlers' Polar Fleece Full-Zip Mock Jacket\",\r\n        \"description\": \"Everyday made better: we listen to customer feedback and fine-tune every detail to ensure quality, fit, and comfort\",\r\n        \"price\": 19,\r\n        \"category\": \"grils Jacket\",\r\n        \"rate\": 5,\r\n        \"quantity\": 92\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/714mUVlvv1L._AC_SX385_.jpg\",\r\n        \"title\": \" Kids and Toddlers' Long Quilted Jacket\",\r\n        \"description\": \"COLD WEATHER STYLING: This adventure-ready, water-resistant quilted jacket is perfect for school, daily wear, or play regardless of what the cold weather brings.\",\r\n        \"price\": 42,\r\n        \"category\": \"grils Jacket\",\r\n        \"rate\": 5,\r\n        \"quantity\": 37\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/81uklnZwt1L._AC_SY445_.jpg\",\r\n        \"title\": \" Girls and Toddlers' Heavyweight Puffer Vest\",\r\n        \"description\": \"COLD WEATHER STYLING: This adventure-ready, water-resistant quilted puffer vest is perfect for school, daily wear, or play regardless of what the cold weather brings.\",\r\n        \"price\": 42,\r\n        \"category\": \"grils Jacket\",\r\n        \"rate\": 3,\r\n        \"quantity\": 98\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/715Ge1qut-L._AC_SX522_.jpg\",\r\n        \"title\": \" Girls and Toddlers' Modern Matte Puffer\",\r\n        \"description\": \"HEAVYWEIGHT PUFFER: Durable heavyweight quilted coat. Fully lined, quilted, and insulated. Designed to keep you warm even on the coldest winter days.\",\r\n        \"price\": 41,\r\n        \"category\": \"grils Jacket\",\r\n        \"rate\": 2,\r\n        \"quantity\": 45\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/31OzY0qyyKL._SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \" Instant Age Rewind Eraser\",\r\n        \"description\": \"Anti-Aging Concealer: Turn back time with this anti-aging under eye treatment concealer infused with Haloxyl; Say bye bye to the look of fine lines, blemishes, redness, and dark circles.\",\r\n        \"price\": 7,\r\n        \"category\": \"makeup\",\r\n        \"rate\": 5,\r\n        \"quantity\": 72\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/51ckXj7p2cL._SY355_.jpg\",\r\n        \"title\": \"NYX PROFESSIONAL MAKEUP Fat Oil Lip Drip\",\r\n        \"description\": \"Fat Oil Lip Drip Lipgloss: Serve glossy, shiny lip makeup looks with our non-sticky lip oil gloss. Our lip gloss is infused with vegan squalane and rich in shine. \",\r\n        \"price\": 8,\r\n        \"category\": \"makeup\",\r\n        \"rate\": 4,\r\n        \"quantity\": 93\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/31A5rZUAKyL._SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"Monochromatic Multi Stick, Luxuriously \",\r\n        \"description\": \"VIBRANT, BLENDABLE COLOR: The e.l.f. Monochromatic Multi Stick is a cream-to-powder, wear-everywhere stick that delivers a highly blendable kiss of color. \",\r\n        \"price\": 5,\r\n        \"category\": \"makeup\",\r\n        \"rate\": 5,\r\n        \"quantity\": 79\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/31hf532TEHL._SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"Maybelline Lash Sensational Sky High \",\r\n        \"description\": \"Lengthening Mascara: This volumizing washable mascara formula is infused with bamboo extract and fibers for long, full and lightweight lashes that don't flake or smudge Lash Extension \",\r\n        \"price\": 9,\r\n        \"category\": \"makeup\",\r\n        \"rate\": 2,\r\n        \"quantity\": 44\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71e+us+O9zL._SY355_.jpg\",\r\n        \"title\": \" This volumizing washable mascara formula\",\r\n        \"description\": \"Diameter: 2.87inch X 2.7inch 0.6inch thickness. Velour facial powder puff, makeup puff, body puff Professional makeup tool, set of 8 For use on face & body, for liquid foundation.\",\r\n        \"price\": 4,\r\n        \"category\": \"makeup\",\r\n        \"rate\": 2,\r\n        \"quantity\": 34\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/31oqhwPYq4L._SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"e.l.f. Hydrating Camo Concealer\",\r\n        \"description\": \"Gives your skin a boost of hydration for a satin finish which doesn't flake. Available in 23 different shades. Cruelty-free, vegan and 100% free from Phthalates, Parabens, Nonylphenol, Ethoxylat\",\r\n        \"price\": 7,\r\n        \"category\": \"makeup\",\r\n        \"rate\": 3,\r\n        \"quantity\": 62\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/91c3Ca9UdiS._AC_SX425_.jpg\",\r\n        \"title\": \"Franklin Sports Kids Junior \",\r\n        \"description\": \"DURABLE KIDS FOOTBALL, AGES 3 YEARS +: These junior footballs are constructed from a durable, high-grip, deep-pebbled rubber that stands up to wear and tear on grass, concrete, or any other surface\",\r\n        \"price\": 10,\r\n        \"category\": \"Sports\",\r\n        \"rate\": 4,\r\n        \"quantity\": 44\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/61ylAUbobfL.__AC_SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"Insulated Water Bottles\",\r\n        \"description\": \"Food Grade 18/8 Stainless Steel Water Bottles: BPA Free, Non-toxic, Eco-friendly, No metallic taste, safe and healthy for all your hydration needs.Choose our insulated water bottle for a stylish\",\r\n        \"price\": 9,\r\n        \"category\": \"Sports\",\r\n        \"rate\": 5,\r\n        \"quantity\": 68\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/81Y7VFrY09L._AC_SX425_.jpg\",\r\n        \"title\": \"Perfect Pushup Elite\",\r\n        \"description\": \"Pushup stand Designed to rotate slightly, engaging more muscles and increasing strength and definition in arms, shoulders, chest, back and abs Ergonomic grips help distribute weight evenly\",\r\n        \"price\": 9,\r\n        \"category\": \"Sports\",\r\n        \"rate\": 2,\r\n        \"quantity\": 41\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71U-AcDqoqL._AC_SY450_.jpg\",\r\n        \"title\": \"HOTWAVE Push Up Board Fitness\",\r\n        \"description\": \"【PORTABLE HOME GYM】HOTWAVE Professional Exercise Pack is used with various workout equipment attachments:foldable Pushup board,3-section Bar.\",\r\n        \"price\": 27,\r\n        \"category\": \"Sports\",\r\n        \"rate\": 3,\r\n        \"quantity\": 80\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/41xQdsytXCL._SY445_SX342_QL70_FMwebp_.jpg\",\r\n        \"title\": \"SKLZ Weighted Training Basketball\",\r\n        \"description\": \" IMPROVE HANDLING & CONTROL: This heavy basketball challenges your arms, wrists, and fingers, boosting strength and conditioning for superior ball control during dribbling, passing, and gameplay.\",\r\n        \"price\": 54,\r\n        \"category\": \"Sports\",\r\n        \"rate\": 3,\r\n        \"quantity\": 44\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/81mNJoz-KSL._AC_SX342_.jpg\",\r\n        \"title\": \"Women's Regular Short-Sleeve v-Neck Swing Dress\",\r\n        \"description\": \"Women's Regular Short-Sleeve v-Neck Swing Dress\",\r\n        \"price\": 19,\r\n        \"category\": \"Dress\",\r\n        \"rate\": 2,\r\n        \"quantity\": 90\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71Biyy-urSL._AC_SY445_.jpg\",\r\n        \"title\": \"WallFlower Women's Luscious\",\r\n        \"description\": \"WallFlower Women's Luscious Curvy Bootcut Mid-Rise Insta Stretch Juniors Jeans (Standard and Plus)\",\r\n        \"price\": 33,\r\n        \"category\": \"Clothing Jeans\",\r\n        \"rate\": 5,\r\n        \"quantity\": 2\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71pqfvJKW5L._AC_SY355_.jpg\",\r\n        \"title\": \"Razer Ornata V3 X Gaming\",\r\n        \"description\": \"Razer Ornata V3 X Gaming Keyboard: Low-Profile Keys - Silent Membrane Switches - Spill Resistant - \",\r\n        \"price\": 34,\r\n        \"category\": \"gaming\",\r\n        \"rate\": 4,\r\n        \"quantity\": 13\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71rcQyKSOcL.__AC_SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"Corsair K55 CORE RGB Membrane Wired Gaming\",\r\n        \"description\": \"Corsair K55 CORE RGB Membrane Wired Gaming Keyboard – Quiet, Responsive Switches – Spill Resistance\",\r\n        \"price\": 40,\r\n        \"category\": \"gaming\",\r\n        \"rate\": 2,\r\n        \"quantity\": 82\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/618zZ7u3sUL.__AC_SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"MageGee Portable 60% Mechanical Gaming Keyboard\",\r\n        \"description\": \"MageGee Portable 60% Mechanical Gaming Keyboard, MK-Box LED Backlit Compact 68 \",\r\n        \"price\": 24,\r\n        \"category\": \"gaming\",\r\n        \"rate\": 4,\r\n        \"quantity\": 10\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/61BJ2MpgTTL.__AC_SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"Razer Viper V3 Pro Wireless Esports Gaming Mouse:\",\r\n        \"description\": \"Razer Viper V3 Pro Wireless Esports Gaming Mouse: Symmetrical - 54g Lightweight - 8K Polling - 35K DPI Optical Sensor - Gen3 Optical Switches - 8 Programmable Controls- 95 Hr Battery - Black\",\r\n        \"price\": 159,\r\n        \"category\": \"gaming\",\r\n        \"rate\": 3,\r\n        \"quantity\": 65\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71QbOWMcP9L._AC_SY355_.jpg\",\r\n        \"title\": \"Razer Basilisk V3 Customizable\",\r\n        \"description\": \"Razer Basilisk V3 Customizable Ergonomic Gaming Mouse: Fastest Gaming Mouse Switch - Chroma RGB Lighting - 26K DPI Optical Sensor -Classic Black\",\r\n        \"price\": 50,\r\n        \"category\": \"gaming\",\r\n        \"rate\": 5,\r\n        \"quantity\": 36\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/614J0VriTRL.__AC_SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"Corsair SCIMITAR RGB ELITE\",\r\n        \"description\": \"Corsair SCIMITAR RGB ELITE Gaming Mouse For MOBA, MMO - 18,000 DPI - 17 Progammable Buttons - iCUE Compatible - Black\",\r\n        \"price\": 60,\r\n        \"category\": \"gaming\",\r\n        \"rate\": 5,\r\n        \"quantity\": 89\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/41FaCOligWL.__AC_SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"Razer Gaming Mouse (2018 Model), Mercury White\",\r\n        \"description\": \"Corsair SCIMITAR RGB ELITE Gaming Mouse For MOBA, MMO - 18,000 DPI - 17 Progammable Buttons - iCUE Compatible - Black\",\r\n        \"price\": 24,\r\n        \"category\": \"gaming\",\r\n        \"rate\": 4,\r\n        \"quantity\": 76\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/81qCZ9Mk6fS._AC_SX342_.jpg\",\r\n        \"title\": \" Men's Slim-Fit Jeans\",\r\n        \"description\": \"Amazon Essentials Men's Slim-Fit Jeans\",\r\n        \"price\": 27,\r\n        \"category\": \"Clothing Jeans\",\r\n        \"rate\": 5,\r\n        \"quantity\": 30\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/61eavECexVL.__AC_SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"MageGee 75% Mechanical Gaming\",\r\n        \"description\": \"MageGee 75% Mechanical Gaming Keyboard with Blue Switch, LED Blue Backlit Keyboard, 87 Keys\",\r\n        \"price\": 26,\r\n        \"category\": \"gaming\",\r\n        \"rate\": 4,\r\n        \"quantity\": 46\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71zS0BekOfL.__AC_SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"Redragon K585 DITI One-Handed RGB\",\r\n        \"description\": \"Redragon K585 DITI One-Handed RGB Mechanical Gaming Keyboard, 42 Keys Type-C Professional Gaming \",\r\n        \"price\": 25,\r\n        \"category\": \"gaming\",\r\n        \"rate\": 4,\r\n        \"quantity\": 66\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71Biyy-urSL._AC_SY445_.jpg\",\r\n        \"title\": \"WallFlower Women's Luscious\",\r\n        \"description\": \"WallFlower Women's Luscious Curvy Bootcut Mid-Rise Insta Stretch Juniors Jeans (Standard and Plus)\",\r\n        \"price\": 33,\r\n        \"category\": \"Clothing Jeans\",\r\n        \"rate\": 5,\r\n        \"quantity\": 2\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/81mNJoz-KSL._AC_SX342_.jpg\",\r\n        \"title\": \"Women's Regular Short-Sleeve v-Neck Swing Dress\",\r\n        \"description\": \"Women's Regular Short-Sleeve v-Neck Swing Dress\",\r\n        \"price\": 19,\r\n        \"category\": \"Dress\",\r\n        \"rate\": 2,\r\n        \"quantity\": 90\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/61tkA+qD3LL._AC_SY445_.jpg\",\r\n        \"title\": \"ZAFUL Women's Satin Sleeveless\",\r\n        \"description\": \"ZAFUL Women's Satin Sleeveless Spaghetti Strap Mini Dress Sexy Slip Cowl Neck Silky Cocktail Party Dresses\",\r\n        \"price\": 30,\r\n        \"category\": \"Dress\",\r\n        \"rate\": 4,\r\n        \"quantity\": 43\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/615Vzp3tGZL._AC_SY445_.jpg\",\r\n        \"title\": \"Amazon Essentials Women's Fluid Twill Tiered Fit \",\r\n        \"description\": \"DRAPEY FLUID TWILL: Made of 100% viscose, our non stretch viscose is extremely breathable and lightweight. With a beautiful drape and a soft, .\",\r\n        \"price\": 9,\r\n        \"category\": \"Dress\",\r\n        \"rate\": 3,\r\n        \"quantity\": 56\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71dkf-IiaBL._AC_SX342_.jpg\",\r\n        \"title\": \"MEROKEETY Women's Summer Striped Short \",\r\n        \"description\": \"Unique Design: sheath dress with two side pockets, crew neck, about knee length, slim fit self tie belted waist, classic stripes, soft and stretchy cotton blend dress.\",\r\n        \"price\": 30,\r\n        \"category\": \"Dress\",\r\n        \"rate\": 2,\r\n        \"quantity\": 62\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71OKr9Yhh3L._AC_SX342_.jpg\",\r\n        \"title\": \"Amazon Essentials Women's Sleeveless \",\r\n        \"description\": \"DRAPEY FLUID TWILL: Made of 100% viscose, our non stretch viscose is extremely breathable and lightweight. With a beautiful drape and a soft, smooth finish, this fabric is comfortable \",\r\n        \"price\": 23,\r\n        \"category\": \"Dress\",\r\n        \"rate\": 3,\r\n        \"quantity\": 39\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/51zo6kbvEPL._AC_SX342_.jpg\",\r\n        \"title\": \"SUUKSESS Women Fitted Bodycon\",\r\n        \"description\": \"Ribbed Basic Casual Dress: 92% Rayon, 8% Spandex, No see through, Buttery soft, Super flattering, Four way stretchy\",\r\n        \"price\": 30,\r\n        \"category\": \"Dress\",\r\n        \"rate\": 2,\r\n        \"quantity\": 27\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71g23iymIdL._AC_SY445_.jpg\",\r\n        \"title\": \"Summer Flowy Womens Dresses\",\r\n        \"description\": \"High Quality Fabric: Summer casual bohemian warp maxi dresses for women 2024 are made of high quality fabric, so these flowy tiered swiss dot long dress for women is soft,\",\r\n        \"price\": 25,\r\n        \"category\": \"Dress\",\r\n        \"rate\": 1,\r\n        \"quantity\": 92\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/61DhwsfmFBL._AC_SX342_.jpg\",\r\n        \"title\": \"Tommy Hilfiger T-Shirt Short Sleeve\",\r\n        \"description\": \"Classic design: The straight lines of these A-line dresses for women come in medium lengths to fall below the knee; the crew-neck design making it easy to pull the dress over your head\",\r\n        \"price\": 27,\r\n        \"category\": \"Dress\",\r\n        \"rate\": 2,\r\n        \"quantity\": 35\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71FFbgnH-WL._AC_SY445_.jpg\",\r\n        \"title\": \"CUPSHE Women's Knit Ruched Mini \",\r\n        \"description\": \"Cupshe ruffled hem ruched mini dress with soft and breathable material, cozy and breathable to wear, an elegant and chic style accentuates your curves and creates a stunning silhouette.\",\r\n        \"price\": 37,\r\n        \"category\": \"Dress\",\r\n        \"rate\": 3,\r\n        \"quantity\": 83\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/61cSezwR67L._AC_SY445_.jpg\",\r\n        \"title\": \"MEROKEETY Women's Strapless \",\r\n        \"description\": \"Size Guide: US SIZE, Small=(US 4-6), Medium=(US 8-10), Large=(US 12-14), X-Large=(US 16-18), XX-Large=(US 20). This fashion ribbed dress is crafted from knitted fabric that offers exceptional \",\r\n        \"price\": 40,\r\n        \"category\": \"Dress\",\r\n        \"rate\": 2,\r\n        \"quantity\": 75\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/51N-NVvEnsL._AC_SY445_.jpg\",\r\n        \"title\": \"MEROKEETY Women's 2024 Summer \",\r\n        \"description\": \"Size Guide: US SIZE, Small=(US 4-6), Medium=(US 8-10), Large=(US 12-14), X-Large=(US 16-18). The flattering maxi dress is crafted from high-quality and slightly elastic fabric, offering a soft and comfortable\",\r\n        \"price\": 30,\r\n        \"category\": \"Dress\",\r\n        \"rate\": 5,\r\n        \"quantity\": 91\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71NpW6LuuHL._AC_SX342_.jpg\",\r\n        \"title\": \"Rafaella Women's Soft Crepe Modern Fit\",\r\n        \"description\": \"VERSATILE LADIES’ DRESS PANTS: An elegant wardrobe basic you can dress up or down, these stylish dress pants for women feature a flattering modern fit, stretch crepe fabric, and a sleek hidden \",\r\n        \"price\": 27,\r\n        \"category\": \"Dress\",\r\n        \"rate\": 2,\r\n        \"quantity\": 59\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/61Ps2D+ktAL._AC_SY395_.jpg\",\r\n        \"title\": \"Under Armour Men's Charged Assert 10\",\r\n        \"description\": \"Lightweight, breathable mesh upper with synthetic overlays for added durability & support\",\r\n        \"price\": 18,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 4,\r\n        \"quantity\": 41\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/51ZLleC1wSL._AC_SY395_.jpg\",\r\n        \"title\": \"Reebok Men's BB4500 Hi 2 Sneaker\",\r\n        \"description\": \"Basketball Shoes: Offering the perfect combination of performance and style, our men's casual sneakers are a must-have for sports enthusiasts and stylish trendsetters alike\",\r\n        \"price\": 35,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 4,\r\n        \"quantity\": 11\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/81vkAHwh9BL._AC_SX342_.jpg\",\r\n        \"title\": \" Men's Slim-Fit Jeans\",\r\n        \"description\": \"Amazon Essentials Men's Slim-Fit Jeans\",\r\n        \"price\": 27,\r\n        \"category\": \"Clothing Jeans\",\r\n        \"rate\": 3,\r\n        \"quantity\": 25\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71XsNC0QW+L._AC_SY445_.jpg\",\r\n        \"title\": \"Lee Women's Legendary\",\r\n        \"description\": \"Lee Women's Legendary Mid Rise Flare Jean\",\r\n        \"price\": 27,\r\n        \"category\": \"Clothing Jeans\",\r\n        \"rate\": 1,\r\n        \"quantity\": 36\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/81en2T43EpL._AC_SY500_.jpg\",\r\n        \"title\": \"VILOCY Men's Mesh Dress Sneakers \",\r\n        \"description\": \"Breathable stretchy knitted fabric upper allows your feet to stretch and breathe freely,match with leather hits on heel and tongue make mens dress sneaker more fashionable.\",\r\n        \"price\": 45,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 2,\r\n        \"quantity\": 23\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71y-7jzv9RL._AC_SX395_.jpg\",\r\n        \"title\": \"Skechers Men's Relaxed Fit\",\r\n        \"description\": \"Air Cooled Memory Foam Classic Fit Air Cooled Bungee Lace Adjustable To buy, select Size Add to Cart Add to List  Sponsored \",\r\n        \"price\": 47,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 4,\r\n        \"quantity\": 19\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/414egjgn-uL._AC_SY395_.jpg\",\r\n        \"title\": \"Under Armour Men's Charged \",\r\n        \"description\": \"Lightweight mesh upper with 3-color digital print delivers complete breathability Durable leather overlays for stability & that locks in your midfoot EVA sockliner provides soft, step-in comfort Charged \",\r\n        \"price\": 49,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 3,\r\n        \"quantity\": 60\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/619rCBa-zKL._AC_SX395_.jpg\",\r\n        \"title\": \"Crocs Unisex-Adult Classic Clogs\",\r\n        \"description\": \"Crocs For Women And Men: The Crocs Classic Clogs Are Not Only The Most Comfortable Shoes For Women And Men But Also Easy To Clean Just Using Soap And Water And Allowing For A Quick Dry.\",\r\n        \"price\": 49,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 1,\r\n        \"quantity\": 38\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/61JQEDRPNTL._AC_SY395_.jpg\",\r\n        \"title\": \"Amazon Essentials Women's Pointed\",\r\n        \"description\": \"COMFORT AND FIT: These ballet flats have a padded insole with high-quality memory foam for added comfort and a heel pillow to relieve pressure and heel slip. The folded topline ensures a no-rub fit.\",\r\n        \"price\": 23,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 2,\r\n        \"quantity\": 90\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/61U4Qvd3IQL._AC_SY395_.jpg\",\r\n        \"title\": \"Hey Dude Women's Wendy Chambray\",\r\n        \"description\": \"Rounded Toe Design and Flex & Fold: This supports healthy feet with its unique shape giving complete freedom of movement. The Hey Dude Wendy will be an instant favorite in your modern-casual shose\",\r\n        \"price\": 41,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 3,\r\n        \"quantity\": 18\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71as1D75N8L._AC_SX385_.jpg\",\r\n        \"title\": \" Girls and Toddlers' Hooded \",\r\n        \"description\": \"ACTIVE SCUBA: Front panel is a lightweight padded and quilted recycled polyester woven fabric, pieced back to a mid-weight, breathable, and ultra-soft scuba fabric to help your child stay comfortable \",\r\n        \"price\": 37,\r\n        \"category\": \"grils Jacket\",\r\n        \"rate\": 1,\r\n        \"quantity\": 83\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71NVH41cY2L._AC_SX385_.jpg\",\r\n        \"title\": \"Toddlers' Quarter-Zip Polar Fleece Jacket\",\r\n        \"description\": \"POLAR FLEECE: Double-sided knit fabric with a brushed finish and subtle texture, this soft and cozy midweight fleece keeps you warm and insulated while withstanding everyday wear. \",\r\n        \"price\": 17,\r\n        \"category\": \"grils Jacket\",\r\n        \"rate\": 2,\r\n        \"quantity\": 73\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71cRkRlBLeS._AC_SX342_.jpg\",\r\n        \"title\": \"Toddlers' Polar Fleece Full-Zip Mock Jacket\",\r\n        \"description\": \"Everyday made better: we listen to customer feedback and fine-tune every detail to ensure quality, fit, and comfort\",\r\n        \"price\": 19,\r\n        \"category\": \"grils Jacket\",\r\n        \"rate\": 5,\r\n        \"quantity\": 92\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/714mUVlvv1L._AC_SX385_.jpg\",\r\n        \"title\": \" Kids and Toddlers' Long Quilted Jacket\",\r\n        \"description\": \"COLD WEATHER STYLING: This adventure-ready, water-resistant quilted jacket is perfect for school, daily wear, or play regardless of what the cold weather brings.\",\r\n        \"price\": 42,\r\n        \"category\": \"grils Jacket\",\r\n        \"rate\": 5,\r\n        \"quantity\": 37\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/81uklnZwt1L._AC_SY445_.jpg\",\r\n        \"title\": \" Girls and Toddlers' Heavyweight Puffer Vest\",\r\n        \"description\": \"COLD WEATHER STYLING: This adventure-ready, water-resistant quilted puffer vest is perfect for school, daily wear, or play regardless of what the cold weather brings.\",\r\n        \"price\": 42,\r\n        \"category\": \"grils Jacket\",\r\n        \"rate\": 3,\r\n        \"quantity\": 98\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/81IxoYunEnL._AC_SY445_.jpg\",\r\n        \"title\": \"Toddlers' Sherpa Fleece Vest\",\r\n        \"description\": \"FAUX-SHERPA FLEECE: This coat features faux-sherpa fleece bonded to an internal polar fleece lining. It provides added warmth without excessive bulk. Available in conventional or recycled faux-sherpa qualities.\",\r\n        \"price\": 38,\r\n        \"category\": \"grils Jacket\",\r\n        \"rate\": 5,\r\n        \"quantity\": 47\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/715Ge1qut-L._AC_SX522_.jpg\",\r\n        \"title\": \" Girls and Toddlers' Modern Matte Puffer\",\r\n        \"description\": \"HEAVYWEIGHT PUFFER: Durable heavyweight quilted coat. Fully lined, quilted, and insulated. Designed to keep you warm even on the coldest winter days.\",\r\n        \"price\": 41,\r\n        \"category\": \"grils Jacket\",\r\n        \"rate\": 2,\r\n        \"quantity\": 45\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/31OzY0qyyKL._SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \" Instant Age Rewind Eraser\",\r\n        \"description\": \"Anti-Aging Concealer: Turn back time with this anti-aging under eye treatment concealer infused with Haloxyl; Say bye bye to the look of fine lines, blemishes, redness, and dark circles.\",\r\n        \"price\": 7,\r\n        \"category\": \"makeup\",\r\n        \"rate\": 5,\r\n        \"quantity\": 72\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/51ckXj7p2cL._SY355_.jpg\",\r\n        \"title\": \"NYX PROFESSIONAL MAKEUP Fat Oil Lip Drip\",\r\n        \"description\": \"Fat Oil Lip Drip Lipgloss: Serve glossy, shiny lip makeup looks with our non-sticky lip oil gloss. Our lip gloss is infused with vegan squalane and rich in shine. \",\r\n        \"price\": 8,\r\n        \"category\": \"makeup\",\r\n        \"rate\": 4,\r\n        \"quantity\": 93\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/31A5rZUAKyL._SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"Monochromatic Multi Stick, Luxuriously \",\r\n        \"description\": \"VIBRANT, BLENDABLE COLOR: The e.l.f. Monochromatic Multi Stick is a cream-to-powder, wear-everywhere stick that delivers a highly blendable kiss of color. \",\r\n        \"price\": 5,\r\n        \"category\": \"makeup\",\r\n        \"rate\": 5,\r\n        \"quantity\": 79\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/31hf532TEHL._SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"Maybelline Lash Sensational Sky High \",\r\n        \"description\": \"Lengthening Mascara: This volumizing washable mascara formula is infused with bamboo extract and fibers for long, full and lightweight lashes that don't flake or smudge Lash Extension \",\r\n        \"price\": 9,\r\n        \"category\": \"makeup\",\r\n        \"rate\": 2,\r\n        \"quantity\": 44\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71e+us+O9zL._SY355_.jpg\",\r\n        \"title\": \" This volumizing washable mascara formula\",\r\n        \"description\": \"Diameter: 2.87inch X 2.7inch 0.6inch thickness. Velour facial powder puff, makeup puff, body puff Professional makeup tool, set of 8 For use on face & body, for liquid foundation.\",\r\n        \"price\": 4,\r\n        \"category\": \"makeup\",\r\n        \"rate\": 2,\r\n        \"quantity\": 34\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/31oqhwPYq4L._SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"e.l.f. Hydrating Camo Concealer\",\r\n        \"description\": \"Gives your skin a boost of hydration for a satin finish which doesn't flake. Available in 23 different shades. Cruelty-free, vegan and 100% free from Phthalates, Parabens, Nonylphenol, Ethoxylat\",\r\n        \"price\": 7,\r\n        \"category\": \"makeup\",\r\n        \"rate\": 3,\r\n        \"quantity\": 62\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71Pe1fxadeL._SY355_.jpg\",\r\n        \"title\": \"Garnier Micellar Water\",\r\n        \"description\": \"ALL-IN-1 Cleanser To hydrate and Rrefresh skin: This all-in-1 micellar cleansing water is a facial cleanser and makeup remover that is gentle on skin. This micellar water for all skin types gently cleanses\",\r\n        \"price\": 9,\r\n        \"category\": \"makeup\",\r\n        \"rate\": 4,\r\n        \"quantity\": 84\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/91c3Ca9UdiS._AC_SX425_.jpg\",\r\n        \"title\": \"Franklin Sports Kids Junior \",\r\n        \"description\": \"DURABLE KIDS FOOTBALL, AGES 3 YEARS +: These junior footballs are constructed from a durable, high-grip, deep-pebbled rubber that stands up to wear and tear on grass, concrete, or any other surface\",\r\n        \"price\": 10,\r\n        \"category\": \"Sports\",\r\n        \"rate\": 4,\r\n        \"quantity\": 44\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/61ylAUbobfL.__AC_SX300_SY300_QL70_FMwebp_.jpg\",\r\n        \"title\": \"Insulated Water Bottles\",\r\n        \"description\": \"Food Grade 18/8 Stainless Steel Water Bottles: BPA Free, Non-toxic, Eco-friendly, No metallic taste, safe and healthy for all your hydration needs.Choose our insulated water bottle for a stylish\",\r\n        \"price\": 9,\r\n        \"category\": \"Sports\",\r\n        \"rate\": 5,\r\n        \"quantity\": 68\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/81Y7VFrY09L._AC_SX425_.jpg\",\r\n        \"title\": \"Perfect Pushup Elite\",\r\n        \"description\": \"Pushup stand Designed to rotate slightly, engaging more muscles and increasing strength and definition in arms, shoulders, chest, back and abs Ergonomic grips help distribute weight evenly\",\r\n        \"price\": 9,\r\n        \"category\": \"Sports\",\r\n        \"rate\": 2,\r\n        \"quantity\": 41\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71U-AcDqoqL._AC_SY450_.jpg\",\r\n        \"title\": \"HOTWAVE Push Up Board Fitness\",\r\n        \"description\": \"【PORTABLE HOME GYM】HOTWAVE Professional Exercise Pack is used with various workout equipment attachments:foldable Pushup board,3-section Bar.\",\r\n        \"price\": 27,\r\n        \"category\": \"Sports\",\r\n        \"rate\": 3,\r\n        \"quantity\": 80\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71H9AI109eL._AC_SX395_.jpg\",\r\n        \"title\": \"New Balance Men's 608 V5 Casual \",\r\n        \"description\": \"ABZORB midsole cushioning aids in absorbing forceful impacts\",\r\n        \"price\": 47,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 2,\r\n        \"quantity\": 74\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/71datvk3W3L._AC_SX395_.jpg\",\r\n        \"title\": \"Skechers Men's Gowalk 5 Qualify-Athletic Mesh Lace Up Performance Walking Shoe Sneaker\",\r\n        \"description\": \"SKECHERS GO WALK: keep up the pace in enhanced comfort and stability with the Skechers Go Walk 5 sneakers; just lace-up and go in these Skechers Go Walk Shoes for men\",\r\n        \"price\": 46,\r\n        \"category\": \"Shoes\",\r\n        \"rate\": 4,\r\n        \"quantity\": 27\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/41xQdsytXCL._SY445_SX342_QL70_FMwebp_.jpg\",\r\n        \"title\": \"SKLZ Weighted Training Basketball\",\r\n        \"description\": \" IMPROVE HANDLING & CONTROL: This heavy basketball challenges your arms, wrists, and fingers, boosting strength and conditioning for superior ball control during dribbling, passing, and gameplay.\",\r\n        \"price\": 54,\r\n        \"category\": \"Sports\",\r\n        \"rate\": 3,\r\n        \"quantity\": 44\r\n    },\r\n    {\r\n        \"image\": \"https://m.media-amazon.com/images/I/715Ge1qut-L._AC_SX522_.jpg\",\r\n        \"title\": \" mouse\",\r\n        \"description\": \"HEAVYWEIGHT PUFFER: Durable heavyweight quilted coat. Fully lined, quilted, and insulated. Designed to keep you warm even on the coldest winter days.\",\r\n        \"price\": 41,\r\n        \"category\": \"gaming\",\r\n        \"rate\": 2,\r\n        \"quantity\": 45\r\n    }]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}products",
+							"host": [
+								"{{URL}}products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get porduct by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}products/{{productId}}",
+							"host": [
+								"{{URL}}products"
+							],
+							"path": [
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"hadi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}products/{{productId}}",
+							"host": [
+								"{{URL}}products"
+							],
+							"path": [
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}products/{{productId}}",
+							"host": [
+								"{{URL}}products"
+							],
+							"path": [
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}products/?title=Corsair",
+							"host": [
+								"{{URL}}products"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Corsair"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "comment",
+			"item": [
+				{
+					"name": "get all comments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}users/comments",
+							"host": [
+								"{{URL}}users"
+							],
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\":\"dgsds s sd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}users/comments",
+							"host": [
+								"{{URL}}users"
+							],
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get comment by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"contemt\":\"hello\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}users/{{userId}}/comments/{{commentId}}",
+							"host": [
+								"{{URL}}users"
+							],
+							"path": [
+								"{{userId}}",
+								"comments",
+								"{{commentId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

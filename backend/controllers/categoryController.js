@@ -1,5 +1,5 @@
 const Category = require("../models/category");
-
+const Product = require("../models/product");
 exports.getAllCategories = async (req, res) => {
   try {
     const categories = await Category.find();
@@ -30,17 +30,18 @@ exports.createCategory = async (req, res) => {
     res.status(500).send({ status: "fail", message: error.message });
   }
 };
-exports.getCategoryById = async (req, res) => {
+exports.getCategoryByIdWithProducts = async (req, res) => {
   const { id } = req.params;
   try {
-    const category = await Category.findById(id);
+    const products=await Product.find({categoryId:id}).select("-categoryId -createdAt -updatedAt -__v ");
+    const category = await Category.findById(id).select("-createdAt -updatedAt -__v ");
     if (!category)
       return res
         .status(400)
         .send({ status: "fail", message: "category fields are required" });
     res.send({
       status: "success",
-      data: category,
+      data: {category,products},
     });
   } catch (error) {
     res.status(500).send({ status: "fail", message: error.message });

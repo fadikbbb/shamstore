@@ -11,21 +11,30 @@ exports.getAllProducts = async (req, res) => {
     }
 };
 
-exports.createProduct = async (req, res) => {
-    const body = req.body;
+exports.createProduct= async (req, res) => {
+    const products = req.body; // Directly expecting an array of products in the request body
     try {
-        if (!body)
-            return res.status(400).send({ status: "fail", message: "product fields are required" });
-        const category = await Category.findOne({name:body.category});
-        if (!category) return res.status(404).send({ status: "fail", message: "category not found" });
-        body.categoryId = category._id;
-        // Create a new product
-        const product = await Product.create(body);
-        return res.status(201).send({ status: "success", message: "product created", data: product });
+        if (!products || !Array.isArray(products) || products.length === 0)
+            return res.status(400).send({ status: "fail", message: "An array of product fields is required" });
+
+        // Map over the products array to validate and attach categoryId for each product
+        const validatedProducts = await Promise.all(products.map(async (product) => {
+            const category = await Category.findOne({ name: product.category });
+            if (!category)
+                throw new Error(`Category "${product.category}" not found for product "${product.title}"`);
+            product.categoryId = category._id;
+            return product;
+        }));
+
+        // Insert all validated products at once
+        const insertedProducts = await Product.insertMany(validatedProducts);
+
+        return res.status(201).send({ status: "success", message: "Products created", data: insertedProducts });
     } catch (error) {
         res.status(500).send({ status: "fail", message: error.message });
     }
 };
+
 
 exports.getProductById = async (req, res) => {
     const { id } = req.params;

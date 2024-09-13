@@ -18,6 +18,8 @@ const categorySchema = new mongoose.Schema({
         minLength: [3, 'description must be at least 3 characters'],
         maxLength: [500, 'description must be at most 20 characters']
     },
-});
+},{
+    timestamps: true
+  });
 const Category = mongoose.model("Category", categorySchema);
 module.exports = Category

@@ -3,6 +3,7 @@ const User = require("../models/user");
 exports.protect = async (req, res, next) => {
   try {
     const authorization = req.headers?.authorization;
+    console.log(authorization);
     if (!authorization) {
       return res
         .status(401)
@@ -15,7 +16,7 @@ exports.protect = async (req, res, next) => {
         .status(401)
         .send({ status: "fail", message: "you are not authorized" });
     }
-    const user = await User.findById(decoded.id);
+    const user = await User.findById(decoded.userId);
     if (!user) {
       return res
         .status(401)

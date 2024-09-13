@@ -5,7 +5,8 @@ import Footer from "../components/footer";
 import axios from "axios";
 function Categories() {
   const URL = process.env.REACT_APP_URL;
-  const categoryName = useParams().id;
+  const categoryId = useParams().id;
+  const [category,setCategory] = useState({});
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,11 +14,12 @@ function Categories() {
   useEffect(() => {
     async function fetchData() {
       try {
+
         const response = await axios.get(
-          `${URL}products/category/${categoryName}`
+          `${URL}products/categories/${categoryId}`
         );
-        setProducts(response.data.data);
-        console.log(response.data.data);
+        setCategory(response.data.data.category);
+        setProducts(response.data.data.products);
       } catch (error) {
         setError(error);
       } finally {
@@ -25,7 +27,7 @@ function Categories() {
       }
     }
     fetchData();
-  }, [categoryName, URL]);
+  }, [categoryId, URL]);
 
   if (loading) {
     return (
@@ -44,7 +46,7 @@ function Categories() {
   return (
     <div style={{ height: "100vh" }}>
       <Navbar />
-      <h1 className="title">{categoryName}</h1>
+      <h1 className="title">{category.name}</h1>
       <div className="flex flex-wrap justify-evenly w-full my-[60px]">
         {products &&
           products.map((product) => (

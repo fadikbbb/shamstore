@@ -1,39 +1,29 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-
-const ContactForm = () => {
+import Comment from "./comment";
+const ContactForm = ({ left, right }) => {
   const URL = process.env.REACT_APP_URL;
-  
+
   // Initialize form data
   const [formData, setFormData] = useState({
     content: "",
   });
-  
+
   // Initialize token from localStorage only once during first render
   const [token, setToken] = useState(null);
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
     if (savedToken) setToken(savedToken);
-  }, []);
+  }, [token]);
 
   // For success or error message
   const [message, setMessage] = useState(null);
-  
+
   // For loading state
   const [submitting, setSubmitting] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitting(true);
-console.log(token);
+    setFormData({ content: e.target.content.value });
     try {
       // Make a POST request to send form data
       await axios.post(`${URL}users/comments`, formData, {
@@ -41,9 +31,11 @@ console.log(token);
           Authorization: `Bearer ${token}`,
         },
       });
+      setSubmitting(true);
       setMessage("Message sent successfully!");
-      setFormData({ content: "" });
+    
     } catch (error) {
+      console.error("Error sending form data:", error);
       console.error("Error sending form data:", error);
       setMessage("Error sending message. Please try again later.");
     } finally {
@@ -62,11 +54,12 @@ console.log(token);
         <div className="relative">
           <textarea
             name="content"
-            value={formData.content}
-            onChange={handleChange}
             required
             className="input-des"
             placeholder="Leave a comment here"
+            onChange={(e) =>
+              setFormData({ ...formData, content: e.target.value })
+            }
             id="contentInput"
             style={{ height: "100px" }}
           ></textarea>
@@ -94,6 +87,7 @@ console.log(token);
           {submitting ? "Submitting..." : "Submit"}
         </button>
       </form>
+      <Comment added={formData} right={right} left={left} />
     </div>
   );
 };

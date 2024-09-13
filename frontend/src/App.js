@@ -1,5 +1,6 @@
+// src/App.js
 import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Categories from "./pages/category";
 import Home from "./pages/home";
 import Products from "./pages/products";
@@ -14,32 +15,49 @@ import Customer from "./pages/dashboard/customer";
 import Cart from "./pages/cart";
 import Logout from "./pages/auth/logout";
 import NotFound from "./pages/NotFound";
-//i want to import env
-
-const router = createBrowserRouter([
-  { path: "/", element: <Home /> },
-  { path: "/login", element: <Login /> },
-  { path: "/signup", element: <Signup /> },
-  { path: "/logout", element: <Logout /> },
-  { path: "/categories/:id", element: <Categories /> },
-  { path: "/products", element: <Products /> },
-  { path: "/products/:id", element: <Product /> },
-  { path: "/dashboard", element: <Dashboard /> },
-  { path: "/dashboard/addproduct", element: <Addproduct /> },
-  { path: "/dashboard/deleteproduct/:id", element: <Deleteproduct /> },
-  { path: "/dashboard/editproduct/:id", element: <Editproduct /> },
-  { path: "/cart", element: <Cart /> },
-  { path: "/dashboard/customer", element: <Customer /> },
-  { path: "*", element: <NotFound /> }
-]);
+import { Provider } from "react-redux";
+import store from "./store/store";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
-    // <CartProvider>
-      <div className="container m-[auto]">
-        <RouterProvider router={router} />
-      </div>
-    // </CartProvider>
+    <div className="container m-[auto]">
+      <Router>
+        <Provider store={store}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/categories/:id" element={<Categories />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/:id" element={<Product />} />
+            <Route
+              path="/dashboard"
+              element={<ProtectedRoute element={<Dashboard />} requiredRole="admin" />}
+            />
+            <Route
+              path="/dashboard/addproduct"
+              element={<ProtectedRoute element={<Addproduct />} requiredRole="admin" />}
+            />
+            <Route
+              path="/dashboard/deleteproduct/:id"
+              element={<ProtectedRoute element={<Deleteproduct />} requiredRole="admin" />}
+            />
+            <Route
+              path="/dashboard/editproduct/:id"
+              element={<ProtectedRoute element={<Editproduct />} requiredRole="admin" />}
+            />
+            <Route
+              path="/dashboard/customer"
+              element={<ProtectedRoute element={<Customer />} requiredRole="admin" />}
+            />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Provider>
+      </Router>
+    </div>
   );
 }
 

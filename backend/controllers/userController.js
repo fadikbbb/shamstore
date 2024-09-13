@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const bcrypt = require("bcrypt");
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
@@ -23,11 +24,21 @@ exports.getUserById = async (req, res) => {
 exports.createUser = async (req, res) => {
   try {
     const body = req.body;
-    const user = await User.create(body);
-    if (!user)
+
+    if (!body.email || !body.firstName || !body.lastName || !body.password)
       return res
         .status(500)
         .send({ status: "fail", message: "user fields are required" });
+
+    const userExists = await User.findOne({ email: body.email });
+    if (userExists)
+      return res
+        .status(400)
+        .send({ status: "fail", message: "user already exists" });
+
+    const hashPassword = await bcrypt.hash(body.password, 12);
+    body.password = hashPassword;
+    const user = await User.create(body);
     return res
       .status(200)
       .send({ status: "success", message: "user created", data: user });

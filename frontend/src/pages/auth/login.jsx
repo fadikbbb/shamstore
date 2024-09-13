@@ -2,9 +2,14 @@ import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUserId, setRole, setToken } from "../../store/userSlice";
+import {jwtDecode} from "jwt-decode"; // Remove destructuring, use it as a function
+
 function Login() {
+  const dispatch = useDispatch();
   const URL = process.env.REACT_APP_URL;
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const [error, setError] = useState(null); // State to hold error message
 
   const handleSubmit = async (event) => {
@@ -18,16 +23,27 @@ function Login() {
     }
     try {
       const response = await axios.post(`${URL}auth/login`, {
-        email: email,
-        password: password,
+        email,
+        password,
       });
       const token = response.data.data;
-      window.localStorage.setItem("token", token);
 
-      navigator("/"); // Navigate to home or desired page
+      // Save token in local storage and Redux
+      window.localStorage.setItem("token", token);
+      dispatch(setToken(token));
+
+      // Decode JWT token
+      const decodedToken = jwtDecode(token);
+
+      // Dispatch userId and role to Redux
+      dispatch(setUserId(decodedToken.userId));
+      dispatch(setRole(decodedToken.role));
+
+      // Navigate to home page after successful login
+      navigate("/");
     } catch (error) {
       console.log(error);
-      setError(error.response.data.message);
+      setError(error.response?.data?.message || "An error occurred. Please try again.");
     }
   };
 
@@ -39,20 +55,19 @@ function Login() {
           {error}
         </div>
       )}
-      <form onSubmit={(event) => handleSubmit(event)}>
+      <form onSubmit={handleSubmit}>
         <div className="relative md:me-2 my-4  w-full">
           <input
             type="email"
             className="input-des"
             name="email"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
             placeholder="Enter email"
+            required
           />
-          <label htmlFor="exampleInputEmail" className="label-des">
+          <label htmlFor="email" className="label-des">
             Email address
           </label>
-          <small id="emailHelp" className="text-gray-400">
+          <small className="text-gray-400">
             We'll never share your email with anyone else.
           </small>
         </div>
@@ -61,14 +76,13 @@ function Login() {
             type="password"
             className="input-des"
             name="password"
-            id="exampleInputPassword1"
             placeholder="Password"
+            required
           />
-          <label htmlFor="exampleInputPassword1" className="label-des">
+          <label htmlFor="password" className="label-des">
             Password
           </label>
         </div>
-        <br />
         <div className="text-center">
           <button type="submit" className="btn-lightgreen">
             Submit
