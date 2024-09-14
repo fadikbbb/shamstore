@@ -13,6 +13,13 @@ html{
 }
 
 @layer components {
+  .table-link{
+  @apply text-white py-2 md:px-4 rounded m-1
+ 
+  }
+  .table-th{
+    @apply text-ellipsis overflow-hidden
+  }
   .btn-lightgreen {
     @apply outline outline-1 outline-offset-2 outline-cyan-500 py-1 px-6 hover:bg-cyan-500 hover:text-white duration-200 rounded-full;
   }

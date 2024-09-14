@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 exports.protect = async (req, res, next) => {
+  console.log(req.headers.authorization);
   try {
     const authorization = req.headers?.authorization;
-    console.log(authorization);
     if (!authorization) {
       return res
         .status(401)
@@ -23,7 +23,6 @@ exports.protect = async (req, res, next) => {
         .send({ status: "fail", message: "you are not authorized" });
     }
     req.user = user;
-    console.log("done auth");
     next();
   } catch (error) {
     res.status(500).send({ status: "fail", message: error.message });

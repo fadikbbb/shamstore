@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
+    
     res.send({ status: "success", count: users.length, data: users });
   } catch (error) {
     res.status(500).send({ status: "fail", message: error.message });

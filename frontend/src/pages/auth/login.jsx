@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import ForgotPasswordForm from "../../components/forgotPasswordForm";
 import { setUserId, setRole, setToken } from "../../store/userSlice";
 import {jwtDecode} from "jwt-decode"; // Remove destructuring, use it as a function
 
@@ -10,8 +11,12 @@ function Login() {
   const dispatch = useDispatch();
   const URL = process.env.REACT_APP_URL;
   const navigate = useNavigate();
+  const [apearForm,setApearForm] = useState(false)
   const [error, setError] = useState(null); // State to hold error message
 
+  function closeForm(closeForm){
+    setApearForm(closeForm)
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     const email = event.target.email.value;
@@ -42,7 +47,6 @@ function Login() {
       // Navigate to home page after successful login
       navigate("/");
     } catch (error) {
-      console.log(error);
       setError(error.response?.data?.message || "An error occurred. Please try again.");
     }
   };
@@ -84,6 +88,10 @@ function Login() {
           </label>
         </div>
         <div className="text-center">
+
+          <button type="button" onClick={()=>setApearForm(true)} className="m-3 text-blue-500 hover:text-blue-800">
+           do you forgot password?
+          </button>
           <button type="submit" className="btn-lightgreen">
             Submit
           </button>
@@ -92,6 +100,7 @@ function Login() {
           </Link>
         </div>
       </form>
+        {apearForm && <ForgotPasswordForm closeForm={closeForm} />}
     </div>
   );
 }

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbars from "../components/navbar";
-import { useParams } from "react-router-dom";
-// import { CartContext } from "../contexts/CartContext";
 import Footer from "../components/footer";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addItem } from "../store/cartSlice";
+
 function Product() {
   const URL = process.env.REACT_APP_URL;
   const { id } = useParams();
@@ -12,16 +13,14 @@ function Product() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [price, setPrice] = useState(0);
   const [newPrice, setNewPrice] = useState(0);
-  // const { addToCart } = useContext(CartContext);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await axios.get(`${URL}products/${id}`);
         setProduct(response.data.data);
-        setPrice(response.data.data.price);
       } catch (error) {
         console.log(error);
         setError(error);
@@ -33,14 +32,18 @@ function Product() {
   }, [id, URL]);
 
   useEffect(() => {
-    setNewPrice(price * quantity);
-  }, [quantity, price]);
+    if (product) {
+      setNewPrice(product.price * quantity);
+    }
+  }, [quantity, product]);
 
   const increment = (e) => {
     e.preventDefault();
-    setQuantity((prevQuantity) =>
-      prevQuantity > product.quantity - 1 ? product.quantity : prevQuantity + 1
-    );
+    if (product) {
+      setQuantity((prevQuantity) =>
+        prevQuantity >= product.quantity ? product.quantity : prevQuantity + 1
+      );
+    }
   };
 
   const decrement = (e) => {
@@ -48,13 +51,27 @@ function Product() {
     setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
   };
 
+  const handleAddToCart = () => {
+    if (product) {
+      // Add item to Redux store
+      dispatch(
+        addItem({
+          image: product.image,
+          id: product._id,
+          description: product.description,
+          title: product.title,
+          price: product.price,
+          quantity: quantity,
+        })
+      );
+    }
+  };
+
   if (loading) {
     return (
-      <img
-        className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]"
-        src="../../../Bean Eater@1x-1.0s-200px-200px.svg"
-        alt=""
-      />
+      <div className="flex justify-center items-center h-screen">
+        <img src="../../../Bean Eater@1x-1.0s-200px-200px.svg" alt="Loading" />
+      </div>
     );
   }
 
@@ -81,9 +98,10 @@ function Product() {
                 src={product.image}
                 className="m-auto max-h-[500px] object-cover"
                 alt={product.title}
+                onError={(e) => (e.target.src = "/path/to/fallback-image.jpg")} // Fallback image
               />
             </div>
-            <div className="md:w-1/2 p-6 bg-gray-50 ">
+            <div className="md:w-1/2 p-6 bg-gray-50">
               <h2 className="text-lg font-semibold text-gray-900 my-4">
                 {product.title}
               </h2>
@@ -98,28 +116,34 @@ function Product() {
                 <button
                   onClick={decrement}
                   className="bg-cyan-300 text-white border-[1px] border-cyan-300 px-4 py-2 rounded-l"
+                  aria-label="Decrease quantity"
                 >
                   -
                 </button>
                 <input
                   type="number"
                   value={quantity}
-                  maxLength={product.quantity}
+                  max={product.quantity}
                   readOnly
-                  className=" w-12 bg-white border-t outline-none text-center border-b border-cyan-300 py-2"
+                  className="w-12 bg-white border-t outline-none text-center border-b border-cyan-300 py-2"
+                  aria-label="Product quantity"
                 />
                 <button
                   onClick={increment}
                   className="bg-cyan-300 text-white border-[1px] border-cyan-300 px-4 py-2 rounded-r"
+                  aria-label="Increase quantity"
                 >
                   +
                 </button>
               </div>
               <p className="text-2xl font-bold text-gray-900 mb-6">
-                ${newPrice?.toFixed(2)}
+                ${newPrice.toFixed(2)}
               </p>
-              <button className="w-full py-3 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition duration-300">
-                cart
+              <button
+                onClick={handleAddToCart}
+                className="w-full py-3 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition duration-300"
+              >
+                Add to Cart
               </button>
               <Link
                 to="/cart"

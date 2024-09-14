@@ -1,13 +1,6 @@
 // src/store/userSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import { decodeToken } from '../utils/jwtutils'; // Adjust the path as needed
-
-const initialState = {
-  userId: null,
-  token: null,
-  role: null,
-};
-
 // Retrieve token from localStorage
 const token = window.localStorage.getItem('token');
 const decodedToken = token ? decodeToken(token) : null;

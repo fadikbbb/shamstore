@@ -25,7 +25,7 @@ app.use("/api/v1/users",commentRouter, userRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/products/categories", categoryRouter);
 app.use("/api/v1/products", productRouter);
-app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/orders", orderRouter);
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`server is running on port ${port}`);

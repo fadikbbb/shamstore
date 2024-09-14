@@ -6,11 +6,9 @@ import { useSelector } from "react-redux";
 function Navbars() {
   const URL = process.env.REACT_APP_URL;
   const user = useSelector((state) => state.user);
-  const [role, setRole] = useState(user.role);
+  const role = user.role;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  // const { cart } = useContext(CartContext); // Access cart from CartContext
-
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -49,6 +47,9 @@ function Navbars() {
       <HashLink to={"/#services"} className="lg:border-0 lg:p-0 nav-link">
         Services
       </HashLink>
+      <NavLink to={"/cart"} className="lg:border-0 lg:p-0 nav-link">
+        Cart
+      </NavLink>
       <HashLink to={"/#contact"} className="lg:border-0 lg:p-0 nav-link">
         Contact Us
       </HashLink>
@@ -63,8 +64,7 @@ function Navbars() {
             </NavLink>
           </>
         ) : (
-        
-        <NavLink to={"/logout"} className="lg:border-0 lg:p-0 nav-link">
+          <NavLink to={"/logout"} className="lg:border-0 lg:p-0 nav-link">
             Logout
           </NavLink>
         )

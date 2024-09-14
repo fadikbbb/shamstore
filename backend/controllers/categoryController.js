@@ -47,18 +47,29 @@ exports.getCategoryByIdWithProducts = async (req, res) => {
     res.status(500).send({ status: "fail", message: error.message });
   }
 };
+
 exports.deleteCategory = async (req, res) => {
   const { id } = req.params;
+
   try {
-    const category = await Category.findByIdAndDelete(id);
-    if (!category)
+    // First, find the category to make sure it exists
+    const category = await Category.findById(id);
+
+    if (!category) {
       return res
-        .status(400)
-        .send({ status: "fail", message: "category fields are required" });
+        .status(404)
+        .send({ status: "fail", message: "Category not found" });
+    }
+
+    // Delete all products associated with this category
+    await Product.deleteMany({ category: id });
+
+    // Then, delete the category itself
+    await Category.findByIdAndDelete(id);
+
     res.send({
       status: "success",
-      message: "category deleted",
-      data: category,
+      message: "Category and its products deleted successfully",
     });
   } catch (error) {
     res.status(500).send({ status: "fail", message: error.message });

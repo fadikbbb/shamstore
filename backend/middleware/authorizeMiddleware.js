@@ -6,7 +6,6 @@ const authorization = (...roles) => {
                 message: "You are not allowed to acces this route",
             });
         }
-console.log("done auth")
         next();
     };
 };
